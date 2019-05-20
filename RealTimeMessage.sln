@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeMessage.Web", "RealTimeMessage.Web\RealTimeMessage.Web.csproj", "{636C7B3F-F8E0-4302-BD58-896C70C75424}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{636C7B3F-F8E0-4302-BD58-896C70C75424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{636C7B3F-F8E0-4302-BD58-896C70C75424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{636C7B3F-F8E0-4302-BD58-896C70C75424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{636C7B3F-F8E0-4302-BD58-896C70C75424}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A61DD2B-BE98-4968-88BE-22A54EF14C03}
+	EndGlobalSection
+EndGlobal
