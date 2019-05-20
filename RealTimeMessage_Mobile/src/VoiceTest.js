@@ -7,6 +7,7 @@ import {
   Image,
   TouchableHighlight
 } from "react-native";
+import WebSocketClient from "./components/WebSocketClient";
 
 import Voice from "react-native-voice";
 
@@ -58,6 +59,9 @@ class VoiceTest extends Component {
     this.setState({
       end: "√"
     });
+    var message = this.state.partialResults.join("");
+    if (message) this.ws.send(this.state.partialResults.join(""));
+    this._startRecognizing();
   };
 
   onSpeechError = e => {
@@ -150,6 +154,26 @@ class VoiceTest extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <WebSocketClient
+          ref={ref => {
+            this.ws = ref;
+          }}
+          url="ws://10.0.10.153:8087/test?room_id=b04ef7e9-a906-429c-96f9-a7a515e8e8c8"
+          onOpen={() => {
+            //alert("Open!");
+            this.ws.send("Dispositivo conectado");
+          }}
+          onMessage={e => {
+            //alert("mensagem");
+          }}
+          onError={e => {
+            //alert("onError");
+          }}
+          onClose={e => {
+            //alert("onClose");
+          }}
+          reconnect // Will try to reconnect onClose
+        />
         <Text style={styles.welcome}>Welcome to React Native Voice!</Text>
         <Text style={styles.instructions}>
           Press the button and start speaking.

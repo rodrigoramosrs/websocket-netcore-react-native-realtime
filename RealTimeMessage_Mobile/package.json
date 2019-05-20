@@ -9,6 +9,8 @@
   "dependencies": {
     "react": "16.8.3",
     "react-native": "0.59.8",
+    "react-native-camera": "^2.9.0",
+    "react-native-qrcode-scanner": "^1.2.1",
     "react-native-voice": "^0.2.6"
   },
   "devDependencies": {
