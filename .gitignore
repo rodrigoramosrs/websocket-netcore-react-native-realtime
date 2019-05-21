@@ -42,3 +42,4 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+RealTimeMessage_Mobile/package-lock.json
