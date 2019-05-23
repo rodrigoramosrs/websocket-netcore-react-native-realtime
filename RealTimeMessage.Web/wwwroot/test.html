@@ -12,14 +12,23 @@
 </head>
 
 <body>
-    <h1>This should be mapped to "/test"</h1>
-    <input type=text id="roomid" placeholder="room id" />
+    <h1>Teste de mensagem com WebSocket</h1>
+    <img id="qrcode" />
+    <br />
+
+    <input type=text id="roomid" placeholder="Identificador da sala" />
     <input type="button" onclick="connect()" value="Conectar" />
     <br />
-    <input type=text id="textInput" placeholder="Enter your text" />
-    <button id="sendButton">Send</button>
+    <br />
+    <input type=text id="textInput" placeholder="Entre o texto para enviar" />
+    <button id="sendButton">Enviar</button>
+    <br /><br />
+    <span>Conteúdo: </span>
+    <br />
+    <textarea rows="5" cols="120" id="alltext"></textarea>
 
-    <img id="qrcode" />
+    <br />
+    <br />
     <ul id="messages"></ul>
 
     <script language="javascript" type="text/javascript">
@@ -92,7 +101,12 @@
             };
 
             socket.onmessage = function (event) {
-                appendItem(list, event.data);
+                var content = event.data;
+                try {
+                    content = atob(content);
+                }
+                catch{ }
+                appendItem(list, content);
                 console.log(event.data);
             };
 
@@ -119,6 +133,8 @@
         }
 
         function appendItem(list, message) {
+            document.getElementById("alltext").value += message ;
+
             var item = document.createElement("li");
             item.appendChild(document.createTextNode(message));
             list.appendChild(item);

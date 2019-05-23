@@ -26,7 +26,7 @@ namespace RealTimeMessage.Web
             var roomID = WebSocketConnectionManager.GetRoomIDFromConnection(socket);
 
 
-            var message = $"{socketId} - room {roomID} said: {Encoding.UTF8.GetString(buffer, 0, result.Count)}";
+            var message = Encoding.UTF8.GetString(buffer, 0, result.Count); //$"{socketId} - room {roomID} said: {Encoding.UTF8.GetString(buffer, 0, result.Count)}";
 
             await SendMessageToRoomAsync(message, roomID);
         }
