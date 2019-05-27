@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Row, Column as Col, Grid } from "react-native-responsive-grid";
 import WS from "../../../services/ws";
+import MessageBuilder from "../../../services/MessageBuilder";
 import Voice from "react-native-voice";
 import { Container, Header, Content, Textarea, Form } from "native-base";
 import Base64 from "../../../util/Base64";
@@ -65,8 +66,15 @@ class VoiceRecognitionPage extends Component {
       end: "√"
     });
     var message = this.state.partialResults.join("");
-    if (message) WS.send(Base64.btoa(this.state.partialResults.join("") + " "));
+    if (message) this.enviarTexto();
     this._startRecognizing();
+  };
+
+  enviarTexto = () => {
+    let message = MessageBuilder.ReconhecimentoSTT(
+      this.state.partialResults.join("")
+    );
+    WS.send(Base64.btoa(JSON.stringify(message)));
   };
 
   onSpeechError = e => {
