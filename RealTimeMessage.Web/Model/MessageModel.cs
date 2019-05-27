@@ -45,7 +45,7 @@ namespace RealTimeMessage.Web.Model
         HOST_CONNECTED = 2, // Envia um comando para o app informando que o host conectou
         HOST_DISCONNECTED = 3, // Envia um comando para o app informando que o host desconectou
 
-        STATE_CHANGE = 5, // Envia uma acao remota para informar o novo estado;
+        STATE_CHANGED = 5, // Envia uma acao remota para informar o novo estado;
 
         ATALHO_ACAO_LAUDAR = 20, //Comando para executar ação remota (ex. laudar, revisar, assinar)
         ATALHO_ACAO_REVISAR = 21, //Comando para executar ação remota (ex. laudar, revisar, assinar)
@@ -60,7 +60,7 @@ namespace RealTimeMessage.Web.Model
         PEDIDO_MEDICO_ANEXO = 60, // Comando para enviar Anexo (pedido médico)
 
         COMANDO_ASSISTENTE = 70, // Comando de texto para enviar uma ação que será interpretada pelo assistente
-    }
+    
 }
 
 }

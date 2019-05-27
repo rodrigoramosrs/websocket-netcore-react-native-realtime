@@ -76,11 +76,11 @@ const MessageBuilder = {
     returnMessage.MessageContent.ContentValue = content;
     return returnMessage;
   },
-  StateChange: content => {
+  StateChanged: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
     returnMessage.CurrentID = "";
     returnMessage.RoomID = "";
-    returnMessage.MessageContent.ActionType = ActionType.STATE_CHANGE;
+    returnMessage.MessageContent.ActionType = ActionType.STATE_CHANGED;
     returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
     returnMessage.MessageContent.ContentValue = content;
     return returnMessage;
@@ -132,5 +132,7 @@ const MessageBuilder = {
     return returnMessage;
   }
 };
+
+MessageBuilder.AnexoPedidoMedico("teste");
 
 export default MessageBuilder;

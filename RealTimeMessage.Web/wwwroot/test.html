@@ -85,7 +85,7 @@
             var roomid = document.getElementById('roomid').value;
             id = roomid ? roomid : GenerateID();
 
-            uri = protocol + "//" + window.location.host + "//test?room_id=" + id;
+            uri = protocol + "//" + window.location.host + "/test?room_id=" + id;
             debugger;
             socket = new WebSocket(uri);
 
