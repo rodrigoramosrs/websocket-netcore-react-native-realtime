@@ -12,10 +12,18 @@ const DefaultMessage = {
   }
 };
 
+function GenerateID() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 const MessageBuilder = {
   AppConnected: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.APP_CONNECTED;
     returnMessage.MessageContent.ContentType = ContentType.TEXT_PLAIN;
@@ -24,34 +32,34 @@ const MessageBuilder = {
   },
   AppDisconected: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.APP_DISCONNECTED;
-    returnMessage.MessageContent.ContentType = ContentType.TEXT_PLAIN;
+    returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
     returnMessage.MessageContent.ContentValue = content;
     return returnMessage;
   },
   HostConnected: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.HOST_CONNECTED;
-    returnMessage.MessageContent.ContentType = ContentType.TEXT_PLAIN;
+    returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
     returnMessage.MessageContent.ContentValue = content;
     return returnMessage;
   },
   HostDisconnected: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.HOST_DISCONNECTED;
-    returnMessage.MessageContent.ContentType = ContentType.TEXT_PLAIN;
+    returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
     returnMessage.MessageContent.ContentValue = content;
     return returnMessage;
   },
   AnexoPedidoMedico: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.PEDIDO_MEDICO_ANEXO;
     returnMessage.MessageContent.ContentType = ContentType.APPLICATION_BASE64;
@@ -60,7 +68,7 @@ const MessageBuilder = {
   },
   Texto: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.ENVIAR_TEXTO_LAUDO;
     returnMessage.MessageContent.ContentType = ContentType.TEXT_PLAIN;
@@ -69,7 +77,7 @@ const MessageBuilder = {
   },
   Audio: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.DITADO_AUDIO;
     returnMessage.MessageContent.ContentType = ContentType.APPLICATION_BASE64;
@@ -78,7 +86,7 @@ const MessageBuilder = {
   },
   StateChanged: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.STATE_CHANGED;
     returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
@@ -87,7 +95,7 @@ const MessageBuilder = {
   },
   Laudar: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.ATALHO_ACAO_LAUDAR;
     returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
@@ -96,7 +104,7 @@ const MessageBuilder = {
   },
   Revisar: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.ATALHO_ACAO_REVISAR;
     returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
@@ -105,7 +113,7 @@ const MessageBuilder = {
   },
   LaudarRevisar: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType =
       ActionType.ATALHO_ACAO_LAUDAR_REVISAR;
@@ -115,7 +123,7 @@ const MessageBuilder = {
   },
   ReconhecimentoSTT: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.RECONHECIMENTO_VOZ_STT;
     returnMessage.MessageContent.ContentType = ContentType.TEXT_PLAIN;
@@ -124,7 +132,7 @@ const MessageBuilder = {
   },
   ComandoAssistente: content => {
     let returnMessage = Object.assign({}, DefaultMessage);
-    returnMessage.CurrentID = "";
+    returnMessage.CurrentID = GenerateID();
     returnMessage.RoomID = "";
     returnMessage.MessageContent.ActionType = ActionType.COMANDO_ASSISTENTE;
     returnMessage.MessageContent.ContentType = ContentType.APPLICATION_JSON;
@@ -132,7 +140,5 @@ const MessageBuilder = {
     return returnMessage;
   }
 };
-
-MessageBuilder.AnexoPedidoMedico("teste");
 
 export default MessageBuilder;

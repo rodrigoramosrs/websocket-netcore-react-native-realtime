@@ -25,7 +25,7 @@
     <br /><br />
     <span>Conteúdo: </span>
     <br />
-    <textarea rows="5" cols="120" id="alltext"></textarea>
+    <textarea style="font-size: 18px; font-weight: bold" rows="5" cols="120" id="alltext"></textarea>
 
     <br />
     <br />
@@ -133,7 +133,8 @@
         }
 
         function appendItem(list, message) {
-            document.getElementById("alltext").value += message ;
+            if (message.indexOf('-') === -1)
+                document.getElementById("alltext").value += message;
 
             var item = document.createElement("li");
             item.appendChild(document.createTextNode(message));
