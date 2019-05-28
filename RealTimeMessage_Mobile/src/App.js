@@ -10,23 +10,26 @@ import {
 } from "react-navigation";
 import { Root } from "native-base";
 //import LoginContainer from "./container/LoginContainer";
+
 import Home from "./container/HomeContainer";
 import BlankPage from "./container/BlankPageContainer";
 import Sidebar from "./container/SidebarContainer";
 import QrCodeReaderPage from "./stories/screens/QrCodeReaderPage";
 import VoiceRecognitionPage from "./stories/screens/VoiceRecognitionPage";
+import Splash from "./stories/screens/Splash";
 
 const DrawerNavigatorRouter = createAppContainer(
   createDrawerNavigator(
     {
       //Login: { screen: LoginContainer },
+      Splash: { screen: Splash },
       Home: { screen: Home },
       BlankPage: { screen: BlankPage },
       QrCodeReaderPage: { screen: QrCodeReaderPage },
       VoiceRecognitionPage: { screen: VoiceRecognitionPage }
     },
     {
-      initialRouteName: "Home",
+      initialRouteName: "Splash",
       //drawerType: "back", //back , front
       //mode: "modal",
       contentComponent: props => <Sidebar {...props} />,
