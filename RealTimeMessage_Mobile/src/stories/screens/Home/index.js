@@ -53,7 +53,43 @@ class Home extends React.Component<Props, State> {
             full
             danger
           >
-            <Text>Gravador de Voz</Text>
+            <Text>Reconhecimento de VOZ</Text>
+          </Button>
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate("VoiceRecognitionPage");
+            }}
+            full
+            danger
+          >
+            <Text>Scanner de documento (Pedido Médico)</Text>
+          </Button>
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate("VoiceRecognitionPage");
+            }}
+            full
+            danger
+          >
+            <Text>Anexar arquivos (Pedido Médico)</Text>
+          </Button>
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate("VoiceRecognitionPage");
+            }}
+            full
+            danger
+          >
+            <Text>Gravador de voz</Text>
+          </Button>
+          <Button
+            onPress={() => {
+              this.props.navigation.navigate("VoiceRecognitionPage");
+            }}
+            full
+            danger
+          >
+            <Text>Compartilhar laudo</Text>
           </Button>
         </Content>
       </Container>

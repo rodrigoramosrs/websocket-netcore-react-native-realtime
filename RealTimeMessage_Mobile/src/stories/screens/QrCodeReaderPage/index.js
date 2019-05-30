@@ -12,7 +12,11 @@ import {
 import QRCodeScanner from "react-native-qrcode-scanner";
 import WS from "../../../services/ws";
 import Base64 from "../../../util/Base64";
-import { withNavigation } from "react-navigation";
+import {
+  withNavigation,
+  NavigationActions,
+  StackActions
+} from "react-navigation";
 
 class QrCodeReaderPage extends Component {
   state = {
@@ -20,6 +24,13 @@ class QrCodeReaderPage extends Component {
     status:
       "Aponte o leitor de Codigos para a tela para se conectar ao sistema."
   };
+  componentDidMount() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "Home" })]
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
   onSuccess = e => {
     this.setState({ qrcode: e.data });
     this.setState({ status: "Tentando conectar..." });
@@ -28,7 +39,7 @@ class QrCodeReaderPage extends Component {
       () => {
         //Conectado
         this.setState({ status: "conectado, redirecionando..." });
-        this.props.navigation.goBack();
+        this.props.navigation.navigate("Home");
         // setTimeout(() => {
 
         // }, 2000);
