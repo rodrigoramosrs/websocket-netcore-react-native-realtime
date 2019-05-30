@@ -25,11 +25,11 @@ class QrCodeReaderPage extends Component {
       "Aponte o leitor de Codigos para a tela para se conectar ao sistema."
   };
   componentDidMount() {
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: "Home" })]
-    });
-    this.props.navigation.dispatch(resetAction);
+    // const resetAction = StackActions.reset({
+    //   index: 0,
+    //   actions: [NavigationActions.navigate({ routeName: "Home" })]
+    // });
+    // this.props.navigation.dispatch(resetAction);
   }
   onSuccess = e => {
     this.setState({ qrcode: e.data });
@@ -39,7 +39,13 @@ class QrCodeReaderPage extends Component {
       () => {
         //Conectado
         this.setState({ status: "conectado, redirecionando..." });
-        this.props.navigation.navigate("Home");
+        //this.props.navigation.navigate("Home");
+
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: "Home" })]
+        });
+        this.props.navigation.dispatch(resetAction);
         // setTimeout(() => {
 
         // }, 2000);

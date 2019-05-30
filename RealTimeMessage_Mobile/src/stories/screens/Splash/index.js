@@ -10,8 +10,12 @@ import {
 class Splash extends React.Component {
   componentDidMount() {
     setTimeout(() => {
-      this.props.navigation.navigate("Home");
-    }, 5000);
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: "Home" })]
+      });
+      this.props.navigation.dispatch(resetAction);
+    }, 3000);
   }
 
   render() {

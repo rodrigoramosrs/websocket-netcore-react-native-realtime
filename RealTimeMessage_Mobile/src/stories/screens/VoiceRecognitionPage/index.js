@@ -1,190 +1,212 @@
 // @flow
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableHighlight
-} from "react-native";
+import { StyleSheet, View, Image, TouchableHighlight } from "react-native";
 import { Row, Column as Col, Grid } from "react-native-responsive-grid";
 import WS from "../../../services/ws";
 import MessageBuilder from "../../../services/MessageBuilder";
 import Voice from "react-native-voice";
-import { Container, Header, Content, Textarea, Form } from "native-base";
+import {
+  Container,
+  Header,
+  Content,
+  Textarea,
+  Form,
+  Icon,
+  Card,
+  CardItem,
+  Body,
+  Text,
+  Button,
+  Toast
+} from "native-base";
 import Base64 from "../../../util/Base64";
+import DefaultHeader from "../../../components/DefaultHeader";
 
 class VoiceRecognitionPage extends Component {
   state = {
-    recognized: "",
-    pitch: "",
-    error: "",
-    end: "",
-    started: "",
-    results: [],
-    partialResults: []
+    textoAtual: ""
   };
 
   constructor(props) {
     super(props);
-    Voice.onSpeechStart = this.onSpeechStart;
-    Voice.onSpeechRecognized = this.onSpeechRecognized;
-    Voice.onSpeechEnd = this.onSpeechEnd;
-    Voice.onSpeechError = this.onSpeechError;
-    Voice.onSpeechResults = this.onSpeechResults;
-    Voice.onSpeechPartialResults = this.onSpeechPartialResults;
-    Voice.onSpeechVolumeChanged = this.onSpeechVolumeChanged;
   }
   componentWillMount() {
     if (!WS.isConnected()) this.props.navigation.navigate("QrCodeReaderPage");
   }
 
-  componentWillUnmount() {
-    Voice.destroy().then(Voice.removeAllListeners);
-  }
-
-  onSpeechStart = e => {
-    // eslint-disable-next-line
-    console.log("onSpeechStart: ", e);
-    this.setState({
-      started: "√"
-    });
-  };
-
-  onSpeechRecognized = e => {
-    // eslint-disable-next-line
-    console.log("onSpeechRecognized: ", e);
-    this.setState({
-      recognized: "√"
-    });
-  };
-
-  onSpeechEnd = e => {
-    // eslint-disable-next-line
-    console.log("onSpeechEnd: ", e);
-    this.setState({
-      end: "√"
-    });
-    var message = this.state.partialResults.join("");
-    if (message) this.enviarTexto();
-    this._startRecognizing();
-  };
-
-  enviarTexto = () => {
-    let message = MessageBuilder.ReconhecimentoSTT(
-      this.state.partialResults.join("")
-    );
-    WS.send(Base64.btoa(JSON.stringify(message)));
-  };
-
-  onSpeechError = e => {
-    // eslint-disable-next-line
-    console.log("onSpeechError: ", e);
-    this.setState({
-      error: JSON.stringify(e.error)
-    });
-  };
-
-  onSpeechResults = e => {
-    // eslint-disable-next-line
-    console.log("onSpeechResults: ", e);
-    this.setState({
-      results: e.value
-    });
-  };
-
-  onSpeechPartialResults = e => {
-    // eslint-disable-next-line
-    console.log("onSpeechPartialResults: ", e);
-    this.setState({
-      partialResults: e.value
-    });
-  };
-
-  onSpeechVolumeChanged = e => {
-    // eslint-disable-next-line
-    console.log("onSpeechVolumeChanged: ", e);
-    this.setState({
-      pitch: e.value
-    });
-  };
-
-  _startRecognizing = async () => {
-    this.setState({
-      recognized: "",
-      pitch: "",
-      error: "",
-      started: "",
-      results: [],
-      partialResults: [],
-      end: ""
-    });
-
-    try {
-      await Voice.start("pt-BR");
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
-    }
-  };
-
-  _stopRecognizing = async () => {
-    try {
-      await Voice.stop();
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
-    }
-  };
-
-  _cancelRecognizing = async () => {
-    try {
-      await Voice.cancel();
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
-    }
-  };
-
-  _destroyRecognizer = async () => {
-    try {
-      await Voice.destroy();
-    } catch (e) {
-      //eslint-disable-next-line
-      console.error(e);
-    }
-    this.setState({
-      recognized: "",
-      pitch: "",
-      error: "",
-      started: "",
-      results: [],
-      partialResults: [],
-      end: "",
-      TextareaContent: ""
-    });
-  };
+  componentWillUnmount() {}
 
   render() {
     return (
       <Container>
-        <Header />
-        <Content padder>
-          <Form>
-            <Textarea
-              onChange={value => {
-                //alert(JSON.stringify(value));
-              }}
-              onChangeText={value => {
-                WS.send(Base64.btoa(value));
-              }}
-              value={this.state.TextareaContent}
-              rowSpan={5}
-              bordered
-              placeholder="Textarea"
-            />
-          </Form>
-          <Text style={styles.welcome}>Welcome to React Native Voice!</Text>
+        <DefaultHeader
+          Title="Voz para texto"
+          Subtitle="Transcreve o texto ditado"
+        />
+        <View style={styles.container}>
+          <Content padder>
+            <View style={styles.topContainer}>
+              <Card>
+                <CardItem header bordered>
+                  <Text style={{ textAlign: "center" }}>
+                    <Icon style={{ fontSize: 18 }} name="mic" /> Voz para texto
+                    (STT)
+                  </Text>
+                </CardItem>
+                <CardItem bordered>
+                  <Body>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        textAlign: "center",
+                        fontStyle: "italic"
+                      }}
+                    >
+                      Clique no campo abaixo, e selecione o reconhecimento de
+                      voz nas opções de teclado do seu sistema. ao finalizar
+                      clique no botão "Enviar conteúdo do texto"
+                    </Text>
+                    <View
+                      stule={{
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      {/* <Icon
+                        style={{
+                          fontSize: 256,
+                          color: "red",
+                          textShadowColor: "#585858",
+                          textShadowOffset: { width: 1, height: 1 },
+                          textShadowRadius: 10
+                        }}
+                        name="mic"
+                      /> */}
+                    </View>
+                  </Body>
+                </CardItem>
+              </Card>
+            </View>
+            <View style={styles.footerContainer}>
+              <View
+                style={{
+                  paddingBottom: 8
+                  // justifyContent: "center",
+                  // alignItems: "center",
+                  // flexDirection: "row"
+                }}
+              >
+                <Textarea
+                  style={{ backgroundColor: "white" }}
+                  onChange={value => {
+                    //alert(JSON.stringify(value));
+                  }}
+                  onChangeText={value => {
+                    this.setState({ textoAtual: value });
+                  }}
+                  value={this.state.TextareaContent}
+                  rowSpan={15}
+                  bordered
+                  placeholder="Digite o seu texto aqui"
+                />
+              </View>
+              <Form>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row"
+                  }}
+                >
+                  <Button
+                    iconLeft
+                    rounded
+                    primary
+                    onPress={() => {
+                      let mensagem = MessageBuilder.ReconhecimentoSTT(
+                        this.state.textoAtual
+                      );
+                      WS.send(Base64.btoa(JSON.stringify(mensagem)));
+
+                      Toast.show({
+                        text: "Conteúdo enviado...",
+                        buttonText: "Ok",
+                        duration: 3000,
+                        type: "success"
+                      });
+                    }}
+                  >
+                    <Icon name="send" />
+                    <Text>Enviar conteúdo do texto</Text>
+                  </Button>
+                </View>
+              </Form>
+            </View>
+          </Content>
+        </View>
+      </Container>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "#F5F5F5"
+  },
+  topContainer: {
+    flex: 4
+    // justifyContent: "center",
+    // alignItems: "center",
+    // flexDirection: "row"
+    // backgroundColor: "#fff"
+  },
+  footerContainer: {
+    flex: 1
+    // justifyContent: "center",
+    // alignItems: "center"
+    //backgroundColor: "#aaa"
+  },
+  button: {
+    width: 50,
+    height: 50
+  }
+  // container: {
+  //   flex: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   backgroundColor: "#F5FCFF"
+  // },
+  // welcome: {
+  //   fontSize: 20,
+  //   textAlign: "center",
+  //   margin: 10
+  // },
+  // action: {
+  //   textAlign: "center",
+  //   color: "#0000FF",
+  //   marginVertical: 5,
+  //   fontWeight: "bold"
+  // },
+  // instructions: {
+  //   textAlign: "center",
+  //   color: "#333333",
+  //   marginBottom: 5
+  // },
+  // stat: {
+  //   textAlign: "center",
+  //   color: "#B0171F",
+  //   marginBottom: 1
+  // }
+});
+
+export default VoiceRecognitionPage;
+
+{
+  /* <Text style={styles.welcome}>Welcome to React Native Voice!</Text>
           <Text style={styles.instructions}>
             Press the button and start speaking.
           </Text>
@@ -225,10 +247,11 @@ class VoiceRecognitionPage extends Component {
           </TouchableHighlight>
           <TouchableHighlight onPress={this._destroyRecognizer}>
             <Text style={styles.action}>Destroy</Text>
-          </TouchableHighlight>
-        </Content>
+          </TouchableHighlight> */
+}
 
-        {/* <View style={styles.container}>
+{
+  /* <View style={styles.container}>
           <View>
             <Row
               style={{
@@ -280,44 +303,5 @@ class VoiceRecognitionPage extends Component {
               </Col>
             </Row>
           </View> 
-           </View>*/}
-      </Container>
-    );
-  }
+           </View>*/
 }
-
-const styles = StyleSheet.create({
-  button: {
-    width: 50,
-    height: 50
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
-  },
-  action: {
-    textAlign: "center",
-    color: "#0000FF",
-    marginVertical: 5,
-    fontWeight: "bold"
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  },
-  stat: {
-    textAlign: "center",
-    color: "#B0171F",
-    marginBottom: 1
-  }
-});
-
-export default VoiceRecognitionPage;

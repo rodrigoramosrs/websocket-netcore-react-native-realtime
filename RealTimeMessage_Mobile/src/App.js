@@ -8,6 +8,7 @@ import {
   StackNavigator,
   DrawerNavigator
 } from "react-navigation";
+import { Animated, Easing } from "react-native";
 import { Root } from "native-base";
 //import LoginContainer from "./container/LoginContainer";
 
@@ -18,8 +19,56 @@ import QrCodeReaderPage from "./stories/screens/QrCodeReaderPage";
 import VoiceRecognitionPage from "./stories/screens/VoiceRecognitionPage";
 import Splash from "./stories/screens/Splash";
 
+const transitionConfig = () => {
+  return {
+    transitionSpec: {
+      duration: 750,
+      easing: Easing.out(Easing.poly(4)),
+      timing: Animated.timing,
+      useNativeDriver: true
+    },
+    screenInterpolator: sceneProps => {
+      const { position, layout, scene, index, scenes } = sceneProps;
+      const toIndex = index;
+      const thisSceneIndex = scene.index;
+      const height = layout.initHeight;
+      const width = layout.initWidth;
+
+      const translateX = position.interpolate({
+        inputRange: [thisSceneIndex - 1, thisSceneIndex, thisSceneIndex + 1],
+        outputRange: [width, 0, 0]
+      });
+
+      // Since we want the card to take the same amount of time
+      // to animate downwards no matter if it's 3rd on the stack
+      // or 53rd, we interpolate over the entire range from 0 - thisSceneIndex
+      const translateY = position.interpolate({
+        inputRange: [0, thisSceneIndex],
+        outputRange: [height, 0]
+      });
+
+      const slideFromRight = { transform: [{ translateX }] };
+      const slideFromBottom = { transform: [{ translateY }] };
+
+      const lastSceneIndex = scenes[scenes.length - 1].index;
+
+      // Test whether we're skipping back more than one screen
+      if (lastSceneIndex - toIndex > 1) {
+        // Do not transoform the screen being navigated to
+        if (scene.index === toIndex) return;
+        // Hide all screens in between
+        if (scene.index !== lastSceneIndex) return { opacity: 0 };
+        // Slide top screen down
+        return slideFromBottom;
+      }
+
+      return slideFromRight;
+    }
+  };
+};
+
 const DrawerNavigatorRouter = createAppContainer(
-  createDrawerNavigator(
+  createStackNavigator(
     {
       //Login: { screen: LoginContainer },
       Splash: { screen: Splash },
@@ -29,39 +78,26 @@ const DrawerNavigatorRouter = createAppContainer(
       VoiceRecognitionPage: { screen: VoiceRecognitionPage }
     },
     {
+      headerMode: "none"
+    },
+    {
       initialRouteName: "Splash",
+      transitionConfig
+
       //drawerType: "back", //back , front
       //mode: "modal",
-      contentComponent: props => <Sidebar {...props} />,
-      transitionConfig: () => ({
-        transitionSpec: {
-          duration: 300,
-          easing: Easing.out(Easing.poly(4)),
-          timing: Animated.timing
-        },
-        screenInterpolator: sceneProps => {
-          const { layout, position, scene } = sceneProps;
-          const { index } = scene;
-
-          const height = layout.initHeight;
-          const translateY = position.interpolate({
-            inputRange: [index - 1, index, index + 1],
-            outputRange: [height, 0, 0]
-          });
-
-          const opacity = position.interpolate({
-            inputRange: [index - 1, index - 0.99, index],
-            outputRange: [0, 1, 1]
-          });
-
-          return { opacity, transform: [{ translateY }] };
-        }
-      })
+      //contentComponent: props => <Sidebar {...props} />
     }
   )
 );
 
-export default DrawerNavigatorRouter;
+export default () => {
+  return (
+    <Root>
+      <DrawerNavigatorRouter />
+    </Root>
+  );
+};
 
 // const MainApp = createAppContainer(DrawerNavigatorRouter);
 
