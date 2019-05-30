@@ -69,9 +69,7 @@ class Home extends React.Component<Props, State> {
           </Body>
           <Right>
             <Button
-              iconLeft
-              rounded
-              primary
+              transparent
               onPress={() => {
                 WS.close();
 

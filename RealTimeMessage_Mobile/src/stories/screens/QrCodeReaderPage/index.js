@@ -22,7 +22,7 @@ class QrCodeReaderPage extends Component {
   state = {
     qrcode: "",
     status:
-      "Aponte o leitor de Codigos para a tela para se conectar ao sistema."
+      "Aponte o leitor de códigos para a tela para se conectar ao sistema."
   };
   componentDidMount() {
     // const resetAction = StackActions.reset({
@@ -53,7 +53,7 @@ class QrCodeReaderPage extends Component {
       () => {
         this.setState({
           status:
-            "Erro ao conectar. Tente novamente. Aponte o leitor de Codigos para a tela para se conectar ao sistema."
+            "Erro ao conectar. Tente novamente. Aponte o leitor de códigos para a tela para se conectar ao sistema."
         });
       }
     );
