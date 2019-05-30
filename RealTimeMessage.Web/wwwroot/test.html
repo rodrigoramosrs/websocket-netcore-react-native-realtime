@@ -29,7 +29,10 @@
 
     <br />
     <br />
-    <ul id="messages"></ul>
+	<div id="messageLog" style="height: 200px; overflow-y: scroll;    border: black;    border-width: 1px;    border-style: solid;">
+		<ul id="messages"></ul>
+	</div>
+    
 
     <script language="javascript" type="text/javascript">
         var id = undefined;
@@ -85,12 +88,12 @@
             var roomid = document.getElementById('roomid').value;
             id = roomid ? roomid : GenerateID();
 
-            uri = protocol + "//" + window.location.host + "/test?room_id=" + id;
-            debugger;
+            uri = protocol + "//" + window.location.host + "//test?room_id=" + id;
+            
             socket = new WebSocket(uri);
 
             socket.onopen = function (event) {
-                debugger;
+                
 
                 console.log("opened connection to " + uri);
                 GenerateQRCode();
@@ -133,12 +136,35 @@
         }
 
         function appendItem(list, message) {
-            if (message.indexOf('-') === -1)
-                document.getElementById("alltext").value += message;
+					
 
+			try
+			{
+				debugger;
+				var messageObject = JSON.parse(message);
+				
+				switch(messageObject.MessageContent.ActionType){
+					case 30:
+						switch(messageObject.MessageContent.ContentType){
+							case 80:
+								document.getElementById("alltext").value += messageObject.MessageContent.ContentValue;
+							break;
+						}
+						
+					break;
+				}
+				
+				
+			}
+			catch(ex)
+			{
+			}
             var item = document.createElement("li");
-            item.appendChild(document.createTextNode(message));
-            list.appendChild(item);
+			item.appendChild(document.createTextNode(message));
+			list.appendChild(item);
+			
+			var element = document.getElementById("messageLog");
+			element.scrollTop = element.scrollHeight;
         }
     </script>
 </body>
