@@ -16,7 +16,7 @@ import {
   CardItem
 } from "native-base";
 import { View, StyleSheet, ScrollView } from "react-native";
-import WS from "../../../services/ws";
+import WebSocketClient from "global-websocket-client";
 import DefaultHeader from "../../../components/DefaultHeader";
 import {
   withNavigation,
@@ -32,7 +32,8 @@ export interface Props {
 export interface State {}
 class Home extends React.Component<Props, State> {
   componentWillMount() {
-    if (!WS.isConnected()) this.props.navigation.navigate("QrCodeReaderPage");
+    if (!WebSocketClient.isConnected())
+      this.props.navigation.navigate("QrCodeReaderPage");
   }
 
   createButton = (text, icon, routeName) => {
@@ -71,7 +72,7 @@ class Home extends React.Component<Props, State> {
             <Button
               transparent
               onPress={() => {
-                WS.close();
+                WebSocketClient.close();
 
                 const resetAction = StackActions.reset({
                   index: 0,

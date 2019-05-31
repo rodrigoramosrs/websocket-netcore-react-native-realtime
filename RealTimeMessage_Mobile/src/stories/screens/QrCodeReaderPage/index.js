@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import QRCodeScanner from "react-native-qrcode-scanner";
-import WS from "../../../services/ws";
+import WebSocketClient from "global-websocket-client";
 import Base64 from "../../../util/Base64";
 import {
   withNavigation,
@@ -34,7 +34,7 @@ class QrCodeReaderPage extends Component {
   onSuccess = e => {
     this.setState({ qrcode: e.data });
     this.setState({ status: "Tentando conectar..." });
-    WS.connect(
+    WebSocketClient.connect(
       Base64.atob(e.data),
       () => {
         //Conectado

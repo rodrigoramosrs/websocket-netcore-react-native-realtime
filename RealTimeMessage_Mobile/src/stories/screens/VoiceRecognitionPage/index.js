@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, TouchableHighlight } from "react-native";
 import { Row, Column as Col, Grid } from "react-native-responsive-grid";
-import WS from "../../../services/ws";
-import MessageBuilder from "../../../services/MessageBuilder";
+import WebSocketClient, { MessageBuilder } from "global-websocket-client";
 import Voice from "react-native-voice";
 import {
   Container,
@@ -31,7 +30,8 @@ class VoiceRecognitionPage extends Component {
     super(props);
   }
   componentWillMount() {
-    if (!WS.isConnected()) this.props.navigation.navigate("QrCodeReaderPage");
+    if (!WebSocketClient.isConnected())
+      this.props.navigation.navigate("QrCodeReaderPage");
   }
 
   componentWillUnmount() {}
@@ -128,7 +128,10 @@ class VoiceRecognitionPage extends Component {
                       let mensagem = MessageBuilder.ReconhecimentoSTT(
                         this.state.textoAtual
                       );
-                      WS.send(Base64.btoa(JSON.stringify(mensagem)));
+                      WebSocketClient.sendAsBase64(
+                        //Base64.btoa(JSON.stringify(mensagem))
+                        mensagem
+                      );
 
                       Toast.show({
                         text: "Conteúdo enviado...",
