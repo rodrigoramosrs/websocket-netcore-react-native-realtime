@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import QRCodeScanner from "react-native-qrcode-scanner";
-import WebSocketClient from "global-websocket-client";
+import WebSocketClient, { MessageBuilder } from "global-websocket-client";
 import Base64 from "../../../util/Base64";
 import {
   withNavigation,
@@ -39,16 +39,16 @@ class QrCodeReaderPage extends Component {
       () => {
         //Conectado
         this.setState({ status: "conectado, redirecionando..." });
-        //this.props.navigation.navigate("Home");
+        WebSocketClient.sendAsBase64(MessageBuilder.AppConnected());
 
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: "Home" })]
         });
         this.props.navigation.dispatch(resetAction);
-        // setTimeout(() => {
+        //  setTimeout(() => {
 
-        // }, 2000);
+        //  }, 2000);
       },
       () => {
         this.setState({
